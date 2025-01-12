@@ -7,6 +7,5 @@ import java.util.List;
 
 public interface CharacterService {
     List<CharacterDto> findAll(MyPageable pageable, String name, int[] comics, int[] series);
-
     CharacterDto.CharacterInfoDto findInfoById(Long characterId);
 }
