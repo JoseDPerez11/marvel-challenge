@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.test.api.marvel_challenge.dto.MyPageable;
 import com.test.api.marvel_challenge.persitence.integration.marvel.MarvelAPIConfig;
 import com.test.api.marvel_challenge.persitence.integration.marvel.dto.ComicDto;
+import com.test.api.marvel_challenge.service.HttpClientService;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +19,9 @@ public class ComicRepository {
     @Autowired
     private MarvelAPIConfig marvelAPIConfig;
 
+    @Autowired
+    private HttpClientService httpClientService;
+
     @Value("${integration.marvel.base-path}")
     private String basePath;
 
@@ -25,7 +29,7 @@ public class ComicRepository {
 
     @PostConstruct
     private void setPath() {
-        characterPath = basePath.concat("/").concat("comics");
+        comicPath = basePath.concat("/").concat("comics");
     }
 
     public List<ComicDto> findAll(MyPageable pageable, Long characterId) {

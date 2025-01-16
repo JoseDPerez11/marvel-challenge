@@ -5,6 +5,7 @@ import com.test.api.marvel_challenge.dto.MyPageable;
 import com.test.api.marvel_challenge.persitence.integration.marvel.MarvelAPIConfig;
 import com.test.api.marvel_challenge.persitence.integration.marvel.dto.CharacterDto;
 import com.test.api.marvel_challenge.persitence.integration.marvel.dto.ComicDto;
+import com.test.api.marvel_challenge.service.HttpClientService;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +22,9 @@ public class CharacterRepository {
 
     @Autowired
     private MarvelAPIConfig marvelAPIConfig;
+
+    @Autowired
+    private HttpClientService httpClientService;
 
     @Value("${integration.marvel.base-path}")
     private String basePath;
