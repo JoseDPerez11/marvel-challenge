@@ -2,9 +2,9 @@ package com.test.api.marvel_challenge.persitence.integration.marvel.repository;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.test.api.marvel_challenge.dto.MyPageable;
+import com.test.api.marvel_challenge.persitence.integration.marvel.mapper.CharacterMapper;
 import com.test.api.marvel_challenge.persitence.integration.marvel.MarvelAPIConfig;
 import com.test.api.marvel_challenge.persitence.integration.marvel.dto.CharacterDto;
-import com.test.api.marvel_challenge.persitence.integration.marvel.dto.ComicDto;
 import com.test.api.marvel_challenge.service.HttpClientService;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,7 +76,7 @@ public class CharacterRepository {
         String finalUrl = characterPath.concat("/").concat(Long.toString(characterId));
         JsonNode response = httpClientService.doGet(finalUrl, marvelQueryParams, JsonNode.class);
 
-        return CharacterMapper.toDtoList(response).get(0);
+        return CharacterMapper.toInfoDtoList(response).get(0);
     }
 
 }

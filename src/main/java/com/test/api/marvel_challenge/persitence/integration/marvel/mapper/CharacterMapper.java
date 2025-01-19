@@ -1,4 +1,4 @@
-package com.test.api.marvel_challenge.persitence.integration.marvel;
+package com.test.api.marvel_challenge.persitence.integration.marvel.mapper;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -62,10 +62,7 @@ public class CharacterMapper {
         }
 
         JsonNode thumbnailNode = characterNode.get("thumbnail");
-        ThumbnailDto thumbnailDto = new ThumbnailDto(
-                thumbnailNode.get("path").asText(),
-                thumbnailNode.get("description").asText()
-        );
+        ThumbnailDto thumbnailDto = ThumbnailMapper.toDto(thumbnailNode);
 
         String image = thumbnailDto.path().concat(".").concat(thumbnailDto.extension());
 
