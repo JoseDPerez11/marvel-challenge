@@ -8,11 +8,13 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
 import java.util.Map;
 
+@Service
 public class JwtService {
 
     @Value("${security.jwt.expiration-in-minutes}")
@@ -25,7 +27,6 @@ public class JwtService {
 
         Date issuedAt = new Date(System.currentTimeMillis());
         Date expiration = new Date(issuedAt.getTime() + (EXPIRATION_IN_MINUTES * 60 * 1000));
-
         return Jwts.builder()
                 .setClaims(extrasClaims)
                 .setSubject(user.getUsername())
@@ -34,7 +35,6 @@ public class JwtService {
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
                 .signWith(generateKey(), SignatureAlgorithm.HS256)
                 .compact();
-
     }
 
     private Key generateKey() {
