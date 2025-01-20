@@ -1,9 +1,16 @@
 package com.test.api.marvel_challenge.persitence.entity;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,7 +57,6 @@ public class User {
     public boolean isAccountExpired() {
         return accountExpired;
     }
-
     public void setAccountExpired(boolean accountExpired) {
         this.accountExpired = accountExpired;
     }
@@ -82,8 +88,39 @@ public class User {
     public Role getRole() {
         return role;
     }
-
     public void setRole(Role role) {
         this.role = role;
+    }
+
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return !accountExpired;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return !accountLocked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return !credentialsExpired;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(role.getAuthority()));
+
+        if (role.getPermissions() == null) return authorities;
+
+        role.getPermissions().stream()
+                .forEach( each -> {
+                    String permissionName = each.getPermission().getName();
+                    authorities.add(new SimpleGrantedAuthority(permissionName));
+                });
+
+        return authorities;
     }
 }
