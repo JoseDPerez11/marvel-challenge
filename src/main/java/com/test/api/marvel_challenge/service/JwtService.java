@@ -1,5 +1,6 @@
 package com.test.api.marvel_challenge.service;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -39,5 +40,14 @@ public class JwtService {
     private Key generateKey() {
         byte[] keyAsBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyAsBytes);
+    }
+
+    public String extractSubject(String jwt) {
+        return extractAllClaims(jwt).getSubject();
+    }
+
+    private Claims extractAllClaims(String jwt) {
+        return Jwts.parserBuilder().setSigningKey(generateKey()).build()
+                .parseClaimsJws(jwt).getBody();
     }
 }
